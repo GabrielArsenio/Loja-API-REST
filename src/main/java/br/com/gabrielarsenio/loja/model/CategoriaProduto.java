@@ -1,5 +1,7 @@
 package br.com.gabrielarsenio.loja.model;
 
+import com.google.gson.Gson;
+
 import javax.persistence.*;
 
 /**
@@ -29,5 +31,9 @@ public class CategoriaProduto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
     }
 }

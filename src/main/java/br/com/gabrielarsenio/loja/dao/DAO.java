@@ -64,7 +64,6 @@ public class DAO<T> {
             if (transaction != null) {
                 transaction.rollback();
             }
-            ex.printStackTrace();
             return false;
         } finally {
             if (session != null && session.isOpen()) {

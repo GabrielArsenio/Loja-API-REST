@@ -1,5 +1,7 @@
 package br.com.gabrielarsenio.loja.model;
 
+import com.google.gson.Gson;
+
 import javax.persistence.*;
 
 /**
@@ -90,5 +92,9 @@ public class Produto {
 
     public void setCaminhoImagem(String caminhoImagem) {
         this.caminhoImagem = caminhoImagem;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
     }
 }
