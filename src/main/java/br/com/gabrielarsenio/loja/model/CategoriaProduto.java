@@ -1,15 +1,13 @@
 package br.com.gabrielarsenio.loja.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Gabriel Arsenio 24/03/2017.
  */
 
 @Entity
+@Table(name = "categoria_produto")
 public class CategoriaProduto {
 
     @Id

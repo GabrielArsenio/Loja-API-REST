@@ -21,6 +21,13 @@ public class Produto {
     private Double peso;
     private String caminhoImagem;
 
+    public Produto() {
+    }
+
+    public Produto(Integer codigo) {
+        this.codigo = codigo;
+    }
+
     public Integer getCodigo() {
         return codigo;
     }

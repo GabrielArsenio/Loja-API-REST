@@ -1,5 +1,7 @@
 package br.com.gabrielarsenio.loja.main;
 
+import br.com.gabrielarsenio.loja.dao.DAO;
+import br.com.gabrielarsenio.loja.dao.ProdutoDAO;
 import br.com.gabrielarsenio.loja.model.Produto;
 import br.com.gabrielarsenio.loja.util.HibernateUtil;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -10,6 +12,7 @@ import org.hibernate.SessionFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Gabriel Arsenio 24/03/2017.
@@ -28,20 +31,12 @@ public class Main {
 //        server.stop();
 
         Produto p = new Produto();
-        p.setNome("Aeeeeeee");
+        p.setCodigo(2);
+        p.setNome("EDITADO");
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        session.beginTransaction();
-        session.save(p);
-        session.getTransaction().commit();
-
-        session.close();
-
-        sessionFactory.close();
+        List<Produto> lista = new ProdutoDAO().buscarTodos();
 
         System.out.println("FIM");
+        System.exit(0);
     }
 }
