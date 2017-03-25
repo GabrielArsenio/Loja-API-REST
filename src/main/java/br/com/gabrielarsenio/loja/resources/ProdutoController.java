@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
  * Gabriel Arsenio 24/03/2017.
  */
 @Path("produtos")
-public class Produto {
+public class ProdutoController {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
