@@ -11,17 +11,23 @@ import java.util.List;
 /**
  * Gabriel Arsenio 25/03/2017.
  */
-public class DAO<T> {
+public class DAO {
 
-    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    private Class classe;
+    private SessionFactory sessionFactory;
+    private final Class entidade;
 
-    public DAO(Class classe) {
-        this.classe = classe;
+    public DAO(Class entidade) {
+        this.entidade = entidade;
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public T salvar(T entidade) {
-        T retorno = null;
+    public DAO(Class entidade, SessionFactory sessionFactory) {
+        this.entidade = entidade;
+        this.sessionFactory = sessionFactory;
+    }
+
+    public Object salvar(Object registro) {
+        Object registroSalvo = null;
         Session session = null;
         Transaction transaction = null;
 
@@ -29,7 +35,7 @@ public class DAO<T> {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            retorno = (T) session.merge(entidade);
+            registroSalvo = session.merge(registro);
 
             transaction.commit();
         } catch (Exception ex) {
@@ -43,13 +49,11 @@ public class DAO<T> {
             }
         }
 
-        return retorno;
+        return registroSalvo;
     }
 
-    /**
-     * @param entidade Não é necessário o modelo inteiro, basta setar apenas a PK
-     */
-    public Boolean excluir(T entidade) {
+    public Boolean excluir(Integer codigo) {
+        Object registro;
         Session session = null;
         Transaction transaction = null;
 
@@ -57,7 +61,8 @@ public class DAO<T> {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            session.delete(entidade);
+            registro = session.get(entidade, codigo);
+            session.delete(registro);
 
             transaction.commit();
         } catch (Exception ex) {
@@ -74,8 +79,8 @@ public class DAO<T> {
         return true;
     }
 
-    public T buscarPorId(Integer codigo) {
-        T retorno = null;
+    public Object buscarPorId(Integer codigo) {
+        Object registro = null;
         Session session = null;
         Transaction transaction = null;
 
@@ -83,7 +88,7 @@ public class DAO<T> {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            retorno = (T) session.get(classe, codigo);
+            registro = session.get(entidade, codigo);
 
             transaction.commit();
         } catch (Exception ex) {
@@ -97,11 +102,11 @@ public class DAO<T> {
             }
         }
 
-        return retorno;
+        return registro;
     }
 
-    public List<T> buscarTodos(Integer inicio, Integer quantidade) {
-        List<T> retorno = null;
+    public List<?> buscarTodos(Integer inicio, Integer quantidade) {
+        List<?> registros = null;
         Session session = null;
         Transaction transaction = null;
         Query query;
@@ -110,7 +115,7 @@ public class DAO<T> {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            query = session.createQuery("FROM " + classe.getSimpleName());
+            query = session.createQuery("FROM " + entidade.getSimpleName());
 
             if (inicio != null && inicio > 0) {
                 query.setFirstResult(inicio);
@@ -120,7 +125,7 @@ public class DAO<T> {
                 query.setMaxResults(quantidade);
             }
 
-            retorno = query.getResultList();
+            registros = query.getResultList();
 
             transaction.commit();
         } catch (Exception ex) {
@@ -134,10 +139,6 @@ public class DAO<T> {
             }
         }
 
-        return retorno;
-    }
-
-    public List<T> buscarTodos() {
-        return buscarTodos(0, 0);
+        return registros;
     }
 }

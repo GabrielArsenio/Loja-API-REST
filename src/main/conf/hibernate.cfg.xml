@@ -11,9 +11,10 @@
         <property name="hibernate.connection.password">mysql4474</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
 
         <mapping class="br.com.gabrielarsenio.loja.model.CategoriaProduto"/>
         <mapping class="br.com.gabrielarsenio.loja.model.Produto"/>
+        <mapping class="br.com.gabrielarsenio.loja.model.Estoque"/>
     </session-factory>
 </hibernate-configuration>

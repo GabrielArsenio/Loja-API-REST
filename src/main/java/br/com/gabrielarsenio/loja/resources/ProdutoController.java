@@ -8,8 +8,7 @@ import javax.ws.rs.Path;
  * Gabriel Arsenio 24/03/2017.
  */
 @Path("produtos")
-public class ProdutoController extends Controller<Produto> {
-
+public class ProdutoController extends Controller {
     public ProdutoController() {
         super(Produto.class);
     }

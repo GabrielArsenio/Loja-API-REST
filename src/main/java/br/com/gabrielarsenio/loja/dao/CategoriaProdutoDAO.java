@@ -5,7 +5,7 @@ import br.com.gabrielarsenio.loja.model.CategoriaProduto;
 /**
  * Gabriel Arsenio 25/03/2017.
  */
-public class CategoriaProdutoDAO extends DAO<CategoriaProduto>{
+public class CategoriaProdutoDAO extends DAO {
 
     public CategoriaProdutoDAO() {
         super(CategoriaProduto.class);

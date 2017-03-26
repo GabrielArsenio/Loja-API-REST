@@ -16,6 +16,14 @@ public class CategoriaProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo;
     private String nome;
+    private Boolean ativo;
+
+    public CategoriaProduto() {
+    }
+
+    public CategoriaProduto(Integer codigo) {
+        this.codigo = codigo;
+    }
 
     public Integer getCodigo() {
         return codigo;
@@ -31,6 +39,14 @@ public class CategoriaProduto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     public String toJson() {

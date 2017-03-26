@@ -12,8 +12,8 @@ public class Main {
 
         HttpServer server = Servidor.startHttpServer();
 
-        System.out.println("Servidor ON");
-        System.in.read();
+//        System.out.println("Servidor ON");
+//        System.in.read();
         server.stop();
 
         System.out.println("FIM");

@@ -16,7 +16,6 @@ public class Servidor {
     public static HttpServer startHttpServer() {
         URI uri = URI.create(BASE_URI);
         ResourceConfig recursos = new ResourceConfig().packages("br.com.gabrielarsenio.loja");
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, recursos);
-        return server;
+        return GrizzlyHttpServerFactory.createHttpServer(uri, recursos);
     }
 }

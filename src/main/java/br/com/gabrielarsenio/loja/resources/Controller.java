@@ -14,30 +14,27 @@ import java.util.List;
 /**
  * Gabriel Arsenio 25/03/2017.
  */
-public abstract class Controller<T> {
+public abstract class Controller {
 
-    private Class classe;
-    private String path;
+    private final Class entidade;
+    private final String path;
 
-    public Controller() {
-    }
-
-    public Controller(Class classe) {
-        this.classe = classe;
-        this.path = this.getClass().getAnnotation(Path.class).value(); //Pega o valor da Path que herdou desse
+    public Controller(Class<?> entidade) {
+        this.entidade = entidade;
+        this.path = this.getClass().getAnnotation(Path.class).value(); //Valor da anotação @Path que herdou desse
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response salvar(String conteudo) {
-        T entidade = toEntity(conteudo);
-        Object entidadeSalva = new DAO(classe).salvar(entidade);
+        Object registro = toObject(conteudo);
+        Object registroSalvo = new DAO(entidade).salvar(registro);
         Integer codigo = 0;
 
         // Invoca o getCodigo da minha entidade pra devolver o código pro front
         try {
-            Method getCodigo = entidadeSalva.getClass().getMethod("getCodigo");
-            codigo = (Integer) getCodigo.invoke(entidadeSalva);
+            Method getCodigo = registroSalvo.getClass().getMethod("getCodigo");
+            codigo = (Integer) getCodigo.invoke(registroSalvo);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -54,15 +51,15 @@ public abstract class Controller<T> {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response alteraProduto(@PathParam("codigo") long codigo, String conteudo) {
-        T entidade = toEntity(conteudo);
-        new DAO(classe).salvar(entidade);
+        Object registro = toObject(conteudo);
+        new DAO(entidade).salvar(registro);
         return Response.ok().build();
     }
 
     @Path("{codigo}")
     @DELETE
     public Response excluir(@PathParam("codigo") Integer codigo) {
-        new DAO(classe).excluir(codigo);
+        new DAO(entidade).excluir(codigo);
         return Response.ok().build();
     }
 
@@ -70,19 +67,19 @@ public abstract class Controller<T> {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarPorId(@PathParam("codigo") Integer codigo) {
-        T entidade = (T) new DAO(classe).buscarPorId(codigo);
-        return toJson(entidade);
+        Object registro = new DAO(entidade).buscarPorId(codigo);
+        return toJson(registro);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String buscarTodos(@QueryParam("inicio") Integer inicio, @QueryParam("quantidade") Integer quantidade) {
-        List<T> entidades = (List<T>) new DAO(classe).buscarTodos(inicio, quantidade);
-        return toJson(entidades);
+        List<?> registros = new DAO(entidade).buscarTodos(inicio, quantidade);
+        return toJson(registros);
     }
 
-    private T toEntity(String jsonObj) {
-        return (T) new Gson().fromJson(jsonObj, classe);
+    private Object toObject(String jsonObj) {
+        return new Gson().fromJson(jsonObj, entidade);
     }
 
     private String toJson(Object obj) {
