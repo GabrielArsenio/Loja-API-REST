@@ -5,16 +5,24 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/loja?useTimezone=true&amp;serverTimezone=UTC&amp;useSSL=false</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">mysql4474</property>
+
+        <!--<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>-->
+        <!--<property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>-->
+        <!--<property name="hibernate.connection.url">jdbc:hsqldb:mem:loja</property>-->
+        <!--<property name="hibernate.connection.username">sa</property>-->
+        <!--<property name="hibernate.connection.password"></property>-->
+
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">update</property>
 
         <mapping class="br.com.gabrielarsenio.loja.model.CategoriaProduto"/>
         <mapping class="br.com.gabrielarsenio.loja.model.Produto"/>
         <mapping class="br.com.gabrielarsenio.loja.model.Estoque"/>
+        <mapping class="br.com.gabrielarsenio.loja.model.Usuario"/>
     </session-factory>
 </hibernate-configuration>

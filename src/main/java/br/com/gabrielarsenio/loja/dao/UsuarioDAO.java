@@ -1,21 +1,21 @@
 package br.com.gabrielarsenio.loja.dao;
 
-import br.com.gabrielarsenio.loja.model.Estoque;
+import br.com.gabrielarsenio.loja.model.Usuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 /**
- * Gabriel Arsenio 25/03/2017.
+ * Gabriel Arsenio 26/03/2017.
  */
-public class EstoqueDAO extends DAO {
+public class UsuarioDAO extends DAO {
 
-    public EstoqueDAO() {
-        super(Estoque.class);
+    public UsuarioDAO() {
+        super(Usuario.class);
     }
 
-    public Object buscarUltimoEstoqueProduto(Integer codigoProduto) {
-        Object registro = null;
+    public Usuario buscarUsuario(String usuario, String senha) {
+        Usuario registro = null;
         Session session = null;
         Transaction transaction = null;
         Query query;
@@ -24,11 +24,12 @@ public class EstoqueDAO extends DAO {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            query = session.createQuery("FROM Estoque e WHERE e.produto.codigo = :codigoProduto ORDER BY e.codigo DESC");
-            query.setParameter("codigoProduto", codigoProduto);
+            query = session.createQuery("FROM Usuario u WHERE u.usuario = :usuario AND u.senha = :senha");
+            query.setParameter("usuario", usuario);
+            query.setParameter("senha", senha);
             query.setMaxResults(1);
 
-            registro = query.uniqueResult();
+            registro = (Usuario) query.uniqueResult();
 
             transaction.commit();
         } catch (Exception ex) {

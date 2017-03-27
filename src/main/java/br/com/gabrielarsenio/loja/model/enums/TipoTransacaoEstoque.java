@@ -4,8 +4,8 @@ package br.com.gabrielarsenio.loja.model.enums;
  * Gabriel Arsenio 25/03/2017.
  */
 public enum TipoTransacaoEstoque {
-    ENTRADA(0, "Entrada manual"),
-    SAIDA(1, "Saída manual"),
+    ENTRADA_MANUAL(0, "Entrada manual"),
+    SAIDA_MANUAL(1, "Saída manual"),
     ENTRADA_PEDIDO_COMPRA(3, "Entrada via pedido de compra"),
     SAIDA_VENDA(4, "Venda");
 

@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class DAO {
 
-    private SessionFactory sessionFactory;
-    private final Class entidade;
+    protected SessionFactory sessionFactory;
+    protected final Class entidade;
 
     public DAO(Class entidade) {
         this.entidade = entidade;
@@ -27,7 +27,6 @@ public class DAO {
     }
 
     public Object salvar(Object registro) {
-        Object registroSalvo = null;
         Session session = null;
         Transaction transaction = null;
 
@@ -35,7 +34,7 @@ public class DAO {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            registroSalvo = session.merge(registro);
+            session.saveOrUpdate(registro);
 
             transaction.commit();
         } catch (Exception ex) {
@@ -49,7 +48,7 @@ public class DAO {
             }
         }
 
-        return registroSalvo;
+        return registro;
     }
 
     public Boolean excluir(Integer codigo) {
