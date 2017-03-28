@@ -3,13 +3,14 @@ package br.com.gabrielarsenio.loja.model;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Gabriel Arsenio 24/03/2017.
  */
 
 @Entity
-public class Produto {
+public class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

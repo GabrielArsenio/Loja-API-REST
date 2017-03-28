@@ -4,13 +4,14 @@ import br.com.gabrielarsenio.loja.model.enums.TipoTransacaoEstoque;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Gabriel Arsenio 25/03/2017.
  */
 @Entity
-public class Estoque {
+public class Estoque implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
