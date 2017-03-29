@@ -5,6 +5,7 @@ import br.com.gabrielarsenio.loja.model.Produto;
 /**
  * Gabriel Arsenio 25/03/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public class ProdutoDAO extends DAO {
 
     public ProdutoDAO() {

@@ -29,17 +29,17 @@ public class ClientEstoque {
     private static HttpServer server;
 
     @BeforeAll
-    public static void iniciaAplicacao() {
+    static void iniciaAplicacao() {
         server = Servidor.startHttpServer();
     }
 
     @AfterAll
-    public static void encerraAplicacao() {
+    static void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    public void buscaUltimoEstoqueProduto() {
+    void buscaUltimoEstoqueProduto() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -82,7 +82,7 @@ public class ClientEstoque {
     }
 
     @Test
-    public void postEstoque() {
+    void postEstoque() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Estoque e = new Estoque();
@@ -93,7 +93,7 @@ public class ClientEstoque {
     }
 
     @Test
-    public void putEstoques() {
+    void putEstoques() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -113,7 +113,7 @@ public class ClientEstoque {
     }
 
     @Test
-    public void deleteEstoques() {
+    void deleteEstoques() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -131,7 +131,7 @@ public class ClientEstoque {
     }
 
     @Test
-    public void getEstoques() {
+    void getEstoques() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/estoque").request().get();
@@ -140,7 +140,7 @@ public class ClientEstoque {
     }
 
     @Test
-    public void getEstoque() {
+    void getEstoque() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/estoque/1").request().get();

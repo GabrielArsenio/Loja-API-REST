@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class DAO {
 
-    protected SessionFactory sessionFactory;
-    protected final Class entidade;
+    final SessionFactory sessionFactory;
+    private final Class entidade;
 
     public DAO(Class entidade) {
         this.entidade = entidade;
@@ -51,6 +51,7 @@ public class DAO {
         return registro;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Boolean excluir(Integer codigo) {
         Object registro;
         Session session = null;
@@ -104,8 +105,8 @@ public class DAO {
         return registro;
     }
 
-    public List<Object> buscarTodos(Integer inicio, Integer quantidade) {
-        List<Object> registros = null;
+    public List<?> buscarTodos(Integer inicio, Integer quantidade) {
+        List<?> registros = null;
         Session session = null;
         Transaction transaction = null;
         Query query;

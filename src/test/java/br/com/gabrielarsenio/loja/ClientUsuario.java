@@ -26,17 +26,17 @@ public class ClientUsuario {
     private static HttpServer server;
 
     @BeforeAll
-    public static void iniciaAplicacao() {
+    static void iniciaAplicacao() {
         server = Servidor.startHttpServer();
     }
 
     @AfterAll
-    public static void encerraAplicacao() {
+    static void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    public void buscarUsuario() {
+    void buscarUsuario() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -56,7 +56,7 @@ public class ClientUsuario {
     }
 
     @Test
-    public void postUsuarios() {
+    void postUsuarios() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Usuario p = new Usuario();
@@ -68,7 +68,7 @@ public class ClientUsuario {
     }
 
     @Test
-    public void putUsuarios() {
+    void putUsuarios() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -89,7 +89,7 @@ public class ClientUsuario {
     }
 
     @Test
-    public void deleteUsuarios() {
+    void deleteUsuarios() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -108,7 +108,7 @@ public class ClientUsuario {
     }
 
     @Test
-    public void getUsuarios() {
+    void getUsuarios() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/usuario").request().get();
@@ -117,7 +117,7 @@ public class ClientUsuario {
     }
 
     @Test
-    public void getUsuario() {
+    void getUsuario() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/usuario/1").request().get();

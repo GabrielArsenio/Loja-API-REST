@@ -25,17 +25,17 @@ public class ClientCategoriaProduto {
     private static HttpServer server;
 
     @BeforeAll
-    public static void iniciaAplicacao() {
+    static void iniciaAplicacao() {
         server = Servidor.startHttpServer();
     }
 
     @AfterAll
-    public static void encerraAplicacao() {
+    static void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    public void postCategoriaProduto() {
+    void postCategoriaProduto() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         CategoriaProduto cp = new CategoriaProduto();
@@ -47,7 +47,7 @@ public class ClientCategoriaProduto {
     }
 
     @Test
-    public void putCategoriaProduto() {
+    void putCategoriaProduto() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -68,7 +68,7 @@ public class ClientCategoriaProduto {
     }
 
     @Test
-    public void deleteCategoriaProduto() {
+    void deleteCategoriaProduto() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -87,7 +87,7 @@ public class ClientCategoriaProduto {
     }
 
     @Test
-    public void getCategoriasProduto() {
+    void getCategoriasProduto() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/categoria-produto").request().get();
@@ -96,7 +96,7 @@ public class ClientCategoriaProduto {
     }
 
     @Test
-    public void getCategoriaProduto() {
+    void getCategoriaProduto() {
         WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
 
         Response res = target.path("/categoria-produto/1").request().get();

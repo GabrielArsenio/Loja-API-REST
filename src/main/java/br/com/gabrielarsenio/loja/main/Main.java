@@ -7,6 +7,7 @@ import java.io.IOException;
 /**
  * Gabriel Arsenio 24/03/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public class Main {
     public static void main(String[] args) throws IOException {
 

@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Gabriel Arsenio 25/03/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class Controller {
 
     private final Class entidade;

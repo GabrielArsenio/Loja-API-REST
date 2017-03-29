@@ -11,6 +11,7 @@ import java.io.Serializable;
 /**
  * Gabriel Arsenio 26/03/2017.
  */
+@SuppressWarnings("SameParameterValue")
 @Entity
 public class Usuario implements Serializable {
 
