@@ -1,0 +1,23 @@
+<div ng-controller="ProdutosController">
+	<div class="jumbotron">
+	    <h1 class="text-center">Loja</h1>
+	</div>
+
+	<div class="row">
+	    <div class="col-md-12">
+	        <form>
+	            <input type="text" ng-model="filtro" ng-model-options="{debounce: 500}" class="form-control" placeholder="buscar">
+	        </form>
+	    </div>
+	</div>
+
+	<div class="row">
+	    <a href="#/produtos/new" class="btn btn-primary" style="margin-top: 5px;">Novo</a>
+	</div>
+
+	<div class="row">
+	    <meu-painel class="col-md-10" ng-repeat="produto in produtos | filter: filtro" titulo="{{produto.codigo}}">
+	        <h3>{{produto.nome}}</h3>
+	    </meu-painel>
+	</div>
+</div>

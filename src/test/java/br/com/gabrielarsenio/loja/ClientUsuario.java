@@ -8,12 +8,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -23,20 +24,25 @@ import javax.ws.rs.core.Response;
  */
 
 public class ClientUsuario {
-    private static HttpServer server;
 
-    @BeforeAll
-    static void iniciaAplicacao() {
+    private static HttpServer server;
+    private static Client client;
+    private static WebTarget target;
+
+    @Before
+    public void iniciaAplicacao() {
         server = Servidor.startHttpServer();
+        client = ClientBuilder.newClient();
+        target = client.target(Servidor.BASE_URI);
     }
 
-    @AfterAll
-    static void encerraAplicacao() {
+    @After
+    public void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    void buscarUsuario() {
+    public void buscarUsuario() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -52,24 +58,21 @@ public class ClientUsuario {
 
         session.close();
 
-        Assertions.assertEquals(usr.getUsuario(), usrEncontrado.getUsuario());
+        Assert.assertEquals(usr.getUsuario(), usrEncontrado.getUsuario());
     }
 
     @Test
-    void postUsuarios() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void postUsuarios() {
         Usuario p = new Usuario();
         p.setUsuario("[TESTE JUnit] Usuario INSERIDO");
 
         Response res = target.path("/usuario").request().post(Entity.json(p.toJson()));
 
-        Assertions.assertEquals(Response.Status.CREATED, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void putUsuarios() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void putUsuarios() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -85,12 +88,11 @@ public class ClientUsuario {
 
         Response res = target.path("/usuario/" + p.getCodigo()).request().put(Entity.json(p.toJson()));
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void deleteUsuarios() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void deleteUsuarios() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -104,24 +106,18 @@ public class ClientUsuario {
 
         Response res = target.path("/usuario/" + p.getCodigo()).request().delete();
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getUsuarios() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getUsuarios() {
         Response res = target.path("/usuario").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getUsuario() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getUsuario() {
         Response res = target.path("/usuario/1").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 }

@@ -1,11 +1,19 @@
-angular.module('loja', ['minhasDiretivas', 'ngAnimate', 'ngRoute'])
-	.config(($routeProvider, $locationProvider) => {
+angular.module('loja', ['minhasDiretivas', 'ngRoute'])
+	.config(function($routeProvider, $locationProvider) {
 
-		$locationProvider.html5Mode(true);
+		$locationProvider.html5Mode(false);
+		$locationProvider.hashPrefix('');
 
 		$routeProvider
-			.when('!/produtos', {
-				tamplateUrl: 'https://code.angularjs.org/1.6.3/angular-route.min.js',
-				controller: 'ProdutosController'
+			.when('/produtos', {
+				templateUrl: 'public/partials/produtos.html', //Até aqui funciona, ele abre meu tamplate na url correta
+				controller: 'ProdutosController' // Quando comenta essa linha não mostra mais o erro
+			})
+			.when('/produtos/new', {
+				templateUrl: 'public/partials/produtos-new.html',
+				controller: 'ProdutoController'
+			})
+			.otherwise({
+				redirectTo: '/'
 			});
 	});

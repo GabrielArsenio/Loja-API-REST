@@ -1,0 +1,30 @@
+<div class="page-header text-center">
+	<h1>Cadastro de Produto</h1>
+	<h3>{{produto.nome}}</h3>
+</div>
+
+<p ng-show="menssagem.length" class="alert alert-info">{{menssagem}}</p>
+
+<form novalidate name="formulario" ng-submit="submeter()" class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label for="codigo">Código</label>
+			<input ng-model="produto.codigo" id="codigo" name="codigo" readonly class="form-control">
+		</div>
+		<div class="form-group">
+			<label for="nome">Nome</label>
+			<input ng-model="produto.nome" id="nome" name="nome" required ng-maxlength="20" class="form-control">
+			<span ng-show="formulario.$submitted && formulario.nome.$error.required" class="form-control alert-danger">Obrigatório informar o nome</span>
+			<span ng-show="formulario.$submitted && formulario.nome.$error.maxlength" class="form-control alert-danger">Máximo 20 caracteres</span>
+		</div>
+		<div class="form-group">
+			<label for="caminhoImagem">URL imagem</label>
+			<input ng-model="produto.caminhoImagem" id="caminhoImagem" name="caminhoImagem" class="form-control">
+		</div>
+		<a href="#/produtos" class="btn btn-primary pull-right">Voltar</a>
+		<button type="submit" ng-disabled="formulario.$invalid" class="btn btn-primary pull-right" style="margin-right: 5px;">Salvar</button>
+	</div>
+	<dir class="col-md-6">
+		
+	</dir>
+</form>

@@ -7,9 +7,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -20,32 +24,33 @@ import javax.ws.rs.core.Response;
 public class ClientProduto {
 
     private static HttpServer server;
+    private static Client client;
+    private static WebTarget target;
 
-    @BeforeAll
-    static void iniciaAplicacao() {
+    @Before
+    public void iniciaAplicacao() {
         server = Servidor.startHttpServer();
+        client = ClientBuilder.newClient();
+        target = client.target(Servidor.BASE_URI);
     }
 
-    @AfterAll
-    static void encerraAplicacao() {
+    @After
+    public void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    void postProdutos() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void postProdutos() {
         Produto p = new Produto();
         p.setNome("[TESTE JUnit] Produto INSERIDO");
 
         Response res = target.path("/produtos").request().post(Entity.json(p.toJson()));
 
-        Assertions.assertEquals(Response.Status.CREATED, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void putProdutos() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void putProdutos() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -61,12 +66,11 @@ public class ClientProduto {
 
         Response res = target.path("/produtos/" + p.getCodigo()).request().put(Entity.json(p.toJson()));
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void deleteProdutos() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void deleteProdutos() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -80,24 +84,18 @@ public class ClientProduto {
 
         Response res = target.path("/produtos/" + p.getCodigo()).request().delete();
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getProdutos() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getProdutos() {
         Response res = target.path("/produtos").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getProduto() {
         Response res = target.path("/produtos/1").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 }

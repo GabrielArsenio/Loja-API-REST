@@ -105,8 +105,8 @@ public class DAO {
         return registro;
     }
 
-    public List<?> buscarTodos(Integer inicio, Integer quantidade) {
-        List<?> registros = null;
+    public List buscarTodos(Integer inicio, Integer quantidade) {
+        List registros = null;
         Session session = null;
         Transaction transaction = null;
         Query query;

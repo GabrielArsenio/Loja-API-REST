@@ -10,12 +10,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -25,21 +26,25 @@ import java.time.LocalDateTime;
  * Gabriel Arsenio 26/03/2017.
  */
 public class ClientEstoque {
-    
-    private static HttpServer server;
 
-    @BeforeAll
-    static void iniciaAplicacao() {
+    private static HttpServer server;
+    private static Client client;
+    private static WebTarget target;
+
+    @Before
+    public void iniciaAplicacao() {
         server = Servidor.startHttpServer();
+        client = ClientBuilder.newClient();
+        target = client.target(Servidor.BASE_URI);
     }
 
-    @AfterAll
-    static void encerraAplicacao() {
+    @After
+    public void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    void buscaUltimoEstoqueProduto() {
+    public void buscaUltimoEstoqueProduto() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -78,23 +83,20 @@ public class ClientEstoque {
 
         session.close();
 
-        Assertions.assertTrue(25.0 == estoqueAtual.getQuantidadeAtual());
+        Assert.assertTrue(25.0 == estoqueAtual.getQuantidadeAtual());
     }
 
     @Test
-    void postEstoque() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void postEstoque() {
         Estoque e = new Estoque();
 
         Response res = target.path("/estoque").request().post(Entity.json(e.toJson()));
 
-        Assertions.assertEquals(Response.Status.CREATED, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void putEstoques() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void putEstoques() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -109,12 +111,11 @@ public class ClientEstoque {
 
         Response res = target.path("/estoque/" + e.getCodigo()).request().put(Entity.json(e.toJson()));
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void deleteEstoques() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void deleteEstoques() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -127,24 +128,18 @@ public class ClientEstoque {
 
         Response res = target.path("/estoque/" + e.getCodigo()).request().delete();
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getEstoques() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getEstoques() {
         Response res = target.path("/estoque").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getEstoque() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getEstoque() {
         Response res = target.path("/estoque/1").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 }

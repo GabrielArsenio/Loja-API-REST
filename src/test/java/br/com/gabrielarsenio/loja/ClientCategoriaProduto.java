@@ -7,12 +7,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -23,32 +24,33 @@ import javax.ws.rs.core.Response;
 public class ClientCategoriaProduto {
 
     private static HttpServer server;
+    private static Client client;
+    private static WebTarget target;
 
-    @BeforeAll
-    static void iniciaAplicacao() {
+    @Before
+    public void iniciaAplicacao() {
         server = Servidor.startHttpServer();
+        client = ClientBuilder.newClient();
+        target = client.target(Servidor.BASE_URI);
     }
 
-    @AfterAll
-    static void encerraAplicacao() {
+    @After
+    public void encerraAplicacao() {
         server.stop();
     }
 
     @Test
-    void postCategoriaProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void postCategoriaProduto() {
         CategoriaProduto cp = new CategoriaProduto();
         cp.setNome("[TESTE JUnit] CategoriaProduto INSERIDO");
 
         Response res = target.path("/categoria-produto").request().post(Entity.json(cp.toJson()));
 
-        Assertions.assertEquals(Response.Status.CREATED, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void putCategoriaProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void putCategoriaProduto() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -64,12 +66,11 @@ public class ClientCategoriaProduto {
 
         Response res = target.path("/categoria-produto/" + cp.getCodigo()).request().put(Entity.json(cp.toJson()));
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void deleteCategoriaProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
+    public void deleteCategoriaProduto() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -83,24 +84,18 @@ public class ClientCategoriaProduto {
 
         Response res = target.path("/categoria-produto/" + cp.getCodigo()).request().delete();
 
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getCategoriasProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getCategoriasProduto() {
         Response res = target.path("/categoria-produto").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 
     @Test
-    void getCategoriaProduto() {
-        WebTarget target = ClientFactory.newClient().target(Servidor.BASE_URI);
-
+    public void getCategoriaProduto() {
         Response res = target.path("/categoria-produto/1").request().get();
-
-        Assertions.assertEquals(Response.Status.OK, res.getStatusInfo());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatusInfo().getStatusCode());
     }
 }
